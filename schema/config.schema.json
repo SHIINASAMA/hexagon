@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "server": {
+      "type": "object",
+      "properties": {
+        "mounts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "keepalive": {
+          "type": "integer",
+          "minimum": 30,
+          "maximum": 300
+        },
+        "services": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "threads": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "cert-file": {
+                "type": "string"
+              },
+              "pkey-file": {
+                "type": "string"
+              },
+              "ip": {
+                "type": "string",
+                "format": "ipv4"
+              },
+              "port": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 65535
+              }
+            },
+            "required": [
+              "threads",
+              "ip",
+              "port"
+            ]
+          }
+        }
+      },
+      "required": [
+        "services"
+      ]
+    }
+  },
+  "required": [
+    "server"
+  ]
+}
