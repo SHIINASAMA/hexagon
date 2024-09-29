@@ -21,6 +21,11 @@ struct HexagonConfig {
     std::vector<Service> services;
     std::map<std::string, std::string> mounts;
 
+    /// \brief 读取配置文件
+    ///
+    /// 读取给定的配置文件流,并将其解析成一个配置对象
+    ///
+    /// \param input 配置文件流
     explicit HexagonConfig(sese::io::InputStream *input);
 
     void parseServer(sese::Value *value);

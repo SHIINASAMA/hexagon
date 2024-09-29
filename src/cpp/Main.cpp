@@ -3,13 +3,30 @@
 #include <sese/io/File.h>
 #include <sese/util/Exception.h>
 
-#include "HexagonConfig.hpp"
 #include "HexagonApplication.hpp"
+#include "HexagonConfig.hpp"
+
+#ifdef _WIN32
+#include <Windows.h>
+
+BOOL WINAPI CtrlHandler(DWORD fdwCtrlType) {
+    switch (fdwCtrlType) {
+        case CTRL_C_EVENT:
+            SESE_WARN("Ctrl-C");
+            return TRUE;
+        default:
+            return FALSE;
+    }
+}
+#endif
 
 int main(int argc, char **argv) {
+#ifdef _WIN32
+    SetConsoleCtrlHandler((PHANDLER_ROUTINE) CtrlHandler, TRUE);
+#endif
     sese::initCore(argc, argv);
-
-    auto file = sese::io::File::create(PROJECT_SOURCE_PATH "/config.yml", sese::io::File::T_READ);
+    auto file = sese::io::File::create(PROJECT_SOURCE_PATH "/config.yml",
+                                       sese::io::File::T_READ);
     try {
         auto config = std::make_unique<HexagonConfig>(file.get());
     } catch (sese::Exception &exception) {
