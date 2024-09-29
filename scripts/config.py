@@ -16,7 +16,7 @@ if "VCPKG_ROOT" not in os.environ:
     if sys.platform == "win32":
         if not os.path.exists(".\\vcpkg\\vcpkg.exe"):
             subprocess.run(
-                [".\\vcpkg\\bootstrap-vcpkg.sh", "-disableMetrics"],
+                [".\\vcpkg\\bootstrap-vcpkg.bat", "-disableMetrics"],
                 cwd=cwd,
                 check=True,
             )
