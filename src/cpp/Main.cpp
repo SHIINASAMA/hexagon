@@ -6,25 +6,38 @@
 #include "HexagonApplication.hpp"
 #include "HexagonConfig.hpp"
 
+void CtrlC() {
+    SESE_WARN("Ctrl-C");
+    exit(0);
+}
+
 #ifdef _WIN32
 #include <Windows.h>
 
 BOOL WINAPI CtrlHandler(DWORD fdwCtrlType) {
     switch (fdwCtrlType) {
         case CTRL_C_EVENT:
-            SESE_WARN("Ctrl-C");
+            CtrlC();
             return TRUE;
         default:
             return FALSE;
     }
 }
+#else
+void CtrlHandler(int sig) {
+    CtrlC();
+}
 #endif
 
 int main(int argc, char **argv) {
+    sese::initCore(argc, argv);
 #ifdef _WIN32
     SetConsoleCtrlHandler((PHANDLER_ROUTINE) CtrlHandler, TRUE);
+#else
+    signal(SIGINT, CtrlHandler);
 #endif
-    sese::initCore(argc, argv);
+    sese::sleep(20s);
+
     auto file = sese::io::File::create(PROJECT_SOURCE_PATH "/config.yml",
                                        sese::io::File::T_READ);
     try {

@@ -27,7 +27,7 @@ if "VCPKG_ROOT" not in os.environ:
             )
 else:
     print("Using existing vcpkg...")
-    vcpkg_root = os.environ["VCPKG_ROOT"]
+    vcpkg_root = Path(os.environ["VCPKG_ROOT"])
 
 subprocess.run(
     [
