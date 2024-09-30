@@ -41,3 +41,5 @@ next-env.d.ts
 /cmake-build-*
 /build*
 /out
+/vcpkg
+*.tar.gz

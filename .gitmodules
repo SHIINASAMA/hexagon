@@ -1,5 +1,0 @@
-[submodule "vcpkg"]
-	path = vcpkg
-	url = https://github.com/microsoft/vcpkg.git
-    ignore = dirty
-	tag = 2024.09.23

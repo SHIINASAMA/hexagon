@@ -1,17 +1,25 @@
 import os
 import subprocess
 import sys
+import tarfile
+import urllib.request
 from pathlib import Path
 
 vcpkg_root: Path
 cwd = Path(__file__).parent.parent
 if "VCPKG_ROOT" not in os.environ:
-    print("Downloading and initializing vcpkg...")
-    subprocess.run(
-        ["git", "submodule", "update", "--init", "--recursive", "--depth=1"],
-        cwd=cwd,
-        check=True,
-    )
+    if not os.path.exists(cwd / "vcpkg"):
+        print("Downloading and initializing vcpkg...")
+        version = "2024.09.23"
+        url = "https://github.com/microsoft/vcpkg/archive/refs/tags/{}.tar.gz".format(version)
+        output = cwd / "vcpkg.tar.gz"
+        dest = cwd
+        urllib.request.urlretrieve(url, output)
+        with tarfile.open(output, "r") as tar:
+            tar.extractall(dest)
+        os.rename(cwd / "vcpkg-{}".format(version), cwd / "vcpkg")
+        os.remove(output)
+
     vcpkg_root = cwd / "vcpkg"
     if sys.platform == "win32":
         if not os.path.exists(".\\vcpkg\\vcpkg.exe"):
