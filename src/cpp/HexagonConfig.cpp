@@ -33,7 +33,7 @@ void HexagonConfig::parseServer(sese::Value *value) {
         !keepalive->isInt()) {
         this->keepalive = 30;
     } else {
-        this->keepalive = keepalive->getInt();
+        this->keepalive = static_cast<uint32_t>(keepalive->getInt());
     }
 
     parseService(server->getDict().find("services"));
@@ -58,7 +58,7 @@ void HexagonConfig::parseService(sese::Value *value) {
             !threads->isInt()) {
             service.threads = 2;
         } else {
-            service.threads = threads->getInt();
+            service.threads = static_cast<uint32_t>(threads->getInt());
         }
         auto ip = item.getDict().find("ip");
         if (ip == nullptr ||
@@ -72,7 +72,7 @@ void HexagonConfig::parseService(sese::Value *value) {
             !port->isInt()) {
             throw sese::Exception("port must be int type");
         } else {
-            service.port = port->getInt();
+            service.port = static_cast<uint32_t>(port->getInt());
         }
 
         auto cert = item.getDict().find("cert-file");

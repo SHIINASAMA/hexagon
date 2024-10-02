@@ -6,7 +6,7 @@ project(Hexagon)
 set(CMAKE_CXX_STANDARD 20)
 
 if (MSVC)
-    add_compile_definitions(/utf-8)
+    add_compile_options(/utf-8)
 endif ()
 
 if (MSVC AND VCPKG_TARGET_TRIPLET STREQUAL "x64-windows-static")

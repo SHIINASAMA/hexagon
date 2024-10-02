@@ -24,18 +24,21 @@ HexagonApplication::HexagonApplication(const std::string &base_path) {
 
     for (auto &&[ip, port, cert, pkey, threads]: config.services) {
         auto ipaddr = sese::net::IPAddress::create(ip.c_str(), port);
-        for (auto i = 0; i < threads; ++i) {
+        for (uint32_t i = 0; i < threads; ++i) {
             server.regService(ipaddr, nullptr);
         }
     }
 
     for (auto &&[k, v]: config.mappings) {
+        SESE_INFO("Mapping {} -> {}", k, v);
         mapping_component.set(k, v);
     }
     server.regFilter("/", mapping_component.getFilter());
 
     for (auto &&[k, v]: config.friendly_response) {
-        friendly_response_component.set(k, base_path + "/" + v);
+        auto path = base_path + "/" + v;
+        SESE_INFO("Friendly response {} -> {}", k, path);
+        friendly_response_component.set(k, path);
     }
     server.regTailFilter(friendly_response_component.getFilter());
 }
