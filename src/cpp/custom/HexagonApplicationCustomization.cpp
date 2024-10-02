@@ -1,6 +1,6 @@
-#include "HexagonApplication.hpp"
+#include "../HexagonApplication.hpp"
 
-void HexagonApplication::initialize() { // NOLINT
+void HexagonApplication::customization() { // NOLINT
     // do not startup server here!!!
     // do not startup server here!!!
     // do not startup server here!!!

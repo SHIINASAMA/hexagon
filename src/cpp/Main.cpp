@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
 #endif
     try {
         application = std::make_unique<HexagonApplication>(base_path);
-        application->initialize();
+        application->customization();
         application->startup();
     } catch (sese::Exception &exception) {
         exception.printStacktrace(sese::record::getLogger());

@@ -14,7 +14,7 @@ public:
 
     void shutdown() const;
 
-    void initialize();
+    void customization();
 
 private:
     sese::service::http::HttpServer server;

@@ -1,5 +1,7 @@
 #include "HexagonApplication.hpp"
 
+#include <filesystem>
+
 #include <sese/io/File.h>
 #include <sese/util/Exception.h>
 #include <sese/Log.h>
@@ -26,6 +28,25 @@ HexagonApplication::HexagonApplication(const std::string &base_path) {
             server.regService(ipaddr, nullptr);
         }
     }
+
+    server.regFilter("/", [](sese::net::http::Request &req, sese::net::http::Response &resp) {
+        if (req.getUri() == "/") {
+            resp.setCode(301);
+            resp.set("location", "/index.html");
+            return false;
+        }
+        return true;
+    });
+
+    server.regTailFilter([](sese::net::http::Request &req, sese::net::http::Response &resp) {
+        if (resp.getCode() == 404) {
+            auto str = "D:/workspaces/hexagon/out/404.html";
+            auto file = sese::io::File::create(str, "r");
+            sese::streamMove(&resp.getBody(), file.get(), std::filesystem::file_size(str));
+            return true;
+        }
+        return false;
+    });
 }
 
 void HexagonApplication::startup() const {
@@ -38,4 +59,3 @@ void HexagonApplication::startup() const {
 void HexagonApplication::shutdown() const {
     server.shutdown(); // NOLINT
 }
-

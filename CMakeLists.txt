@@ -18,7 +18,7 @@ endif ()
 
 add_definitions(-DPROJECT_SOURCE_PATH=\"${PROJECT_SOURCE_DIR}\")
 
-file(GLOB_RECURSE sources "src/cpp/*.cpp" )
+file(GLOB_RECURSE sources "src/cpp/*.cpp" "src/cpp/*.hpp")
 add_executable(Hexagon ${sources})
 
 find_package(sese CONFIG REQUIRED)
