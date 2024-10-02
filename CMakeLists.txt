@@ -5,6 +5,10 @@ set(VCPKG_OVERLAY_PORTS "${CMAKE_CURRENT_LIST_DIR}/vcpkg-ports")
 project(Hexagon)
 set(CMAKE_CXX_STANDARD 20)
 
+if (MSVC)
+    add_compile_definitions(/utf-8)
+endif ()
+
 if (MSVC AND VCPKG_TARGET_TRIPLET STREQUAL "x64-windows-static")
     set(CMAKE_CXX_FLAGS_DEBUG /MTd)
     set(CMAKE_CXX_FLAGS_MINSIZEREL /MT)
@@ -14,12 +18,8 @@ endif ()
 
 add_definitions(-DPROJECT_SOURCE_PATH=\"${PROJECT_SOURCE_DIR}\")
 
-add_executable(
-        Hexagon
-        src/cpp/Main.cpp
-        src/cpp/HexagonConfig.cpp
-        src/cpp/HexagonApplication.cpp
-)
+file(GLOB_RECURSE sources "src/cpp/*.cpp" )
+add_executable(Hexagon ${sources})
 
 find_package(sese CONFIG REQUIRED)
 target_link_libraries(Hexagon PRIVATE Sese::Core)

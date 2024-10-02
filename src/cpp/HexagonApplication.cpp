@@ -26,6 +26,16 @@ HexagonApplication::HexagonApplication(const std::string &base_path) {
             server.regService(ipaddr, nullptr);
         }
     }
-
-    // server.startup();
 }
+
+void HexagonApplication::startup() const {
+    auto result = server.startup();
+    if (!result) {
+        throw sese::Exception("failed to start server");
+    }
+}
+
+void HexagonApplication::shutdown() const {
+    server.shutdown(); // NOLINT
+}
+

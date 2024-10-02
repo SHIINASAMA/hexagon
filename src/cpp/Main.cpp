@@ -8,12 +8,11 @@
 
 std::unique_ptr<HexagonApplication> application;
 
+std::atomic_bool running = true;
+
 void CtrlC() {
     SESE_WARN("Ctrl-C");
-    if (application) {
-
-    }
-    exit(0);
+    running = false;
 }
 
 #ifdef _WIN32
@@ -38,7 +37,7 @@ void CtrlHandler(int sig) {
 }
 #endif
 
-[[noreturn]] int main(int argc, char **argv) {
+int main(int argc, char **argv) {
     sese::initCore(argc, argv);
 #ifdef _WIN32
     SetConsoleCtrlHandler(CtrlHandler, TRUE);
@@ -53,6 +52,8 @@ void CtrlHandler(int sig) {
 #endif
     try {
         application = std::make_unique<HexagonApplication>(base_path);
+        application->initialize();
+        application->startup();
     } catch (sese::Exception &exception) {
         exception.printStacktrace(sese::record::getLogger());
         return -1;
@@ -60,7 +61,9 @@ void CtrlHandler(int sig) {
         SESE_ERROR("{}", exception.what());
         return -1;
     }
-    while (1) {
+    while (running) {
         sese::sleep(1s);
     }
+    application->shutdown();
+    return 0;
 }
