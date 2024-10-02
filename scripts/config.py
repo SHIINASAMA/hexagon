@@ -46,7 +46,7 @@ subprocess.run(
         "build",
         "-G",
         "Ninja",
-        "-DCMAKE_BUILD_TYPE=Debug",
+        "-DCMAKE_BUILD_TYPE=Release",
         "-DCMAKE_TOOLCHAIN_FILE={}/scripts/buildsystems/vcpkg.cmake".format(vcpkg_root)
     ],
     cwd=cwd,

@@ -32,6 +32,7 @@ BOOL WINAPI CtrlHandler(DWORD fdwCtrlType) {
     }
 }
 #else
+#include <signal.h>
 void CtrlHandler(int sig) {
     CtrlC();
 }
@@ -48,8 +49,9 @@ int main(int argc, char **argv) {
 #ifdef _DEBUG
     std::string base_path = PROJECT_SOURCE_PATH;
 #else
-    std::string base_path = sese::system::Paths::getExecutablePath().getNativePath();
+    std::string base_path = "./";
 #endif
+    SESE_INFO("Base path: {}", base_path);
     try {
         application = std::make_unique<HexagonApplication>(base_path);
         application->customization();

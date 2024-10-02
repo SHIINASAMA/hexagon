@@ -9,6 +9,10 @@ if (MSVC)
     add_compile_options(/utf-8)
 endif ()
 
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_definitions(-D_DEBUG)
+endif ()
+
 if (MSVC AND VCPKG_TARGET_TRIPLET STREQUAL "x64-windows-static")
     set(CMAKE_CXX_FLAGS_DEBUG /MTd)
     set(CMAKE_CXX_FLAGS_MINSIZEREL /MT)
