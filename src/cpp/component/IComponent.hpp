@@ -1,6 +1,7 @@
 #pragma once
 
-#include "../HexagonApplication.hpp"
+#include <sese/net/http/Controller.h>
+#include <sese/service/http/HttpService.h>
 
 class IServletComponent {
 public:

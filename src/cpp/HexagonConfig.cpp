@@ -38,6 +38,8 @@ void HexagonConfig::parseServer(sese::Value *value) {
 
     parseService(server->getDict().find("services"));
     parseMount(server->getDict().find("mounts"));
+    parseMappings(server->getDict().find("mappings"));
+    parseFriendlyResponse(server->getDict().find("friendly_responses"));
 }
 
 void HexagonConfig::parseService(sese::Value *value) {
@@ -100,7 +102,7 @@ void HexagonConfig::parseMount(sese::Value *value) {
     }
     for (auto &item: value->getList()) {
         if (!item.isDict()) {
-            throw sese::Exception("mount's element must be string type");
+            throw sese::Exception("mount's element must be object type");
         }
         auto v = item.getDict().begin()->second;
         if (!v->isString()) {
@@ -109,3 +111,43 @@ void HexagonConfig::parseMount(sese::Value *value) {
         mounts[item.getDict().begin()->first] = v->getString();
     }
 }
+
+void HexagonConfig::parseFriendlyResponse(sese::Value *value) {
+    if (value == nullptr ||
+        !value->isList()) {
+        throw sese::Exception("friendly response must be list type");
+    }
+    for (auto &item: value->getList()) {
+        if (!item.isDict()) {
+            throw sese::Exception("friendly response's element must be object type");
+        }
+        char *end;
+        auto k = std::strtol(item.getDict().begin()->first.c_str(), &end, 10);
+        if (*end != 0) {
+            throw sese::Exception("friendly response's key must be integer");
+        }
+        auto v = item.getDict().begin()->second;
+        if (!v->isString()) {
+            throw sese::Exception("friendly response's value must be string type");
+        }
+        friendly_response[k] = v->getString();
+    }
+}
+
+void HexagonConfig::parseMappings(sese::Value *value) {
+    if (value == nullptr ||
+        !value->isList()) {
+        throw sese::Exception("mappings must be list type");
+        }
+    for (auto &item: value->getList()) {
+        if (!item.isDict()) {
+            throw sese::Exception("mapping's element must be object type");
+        }
+        auto v = item.getDict().begin()->second;
+        if (!v->isString()) {
+            throw sese::Exception("mapping's value must be string type");
+        }
+        mappings[item.getDict().begin()->first] = v->getString();
+    }
+}
+

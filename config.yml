@@ -4,6 +4,10 @@ server:
   keepalive: 30
   mounts:
     - /: out
+  mappings:
+    - /: index.html
+  friendly_responses:
+    - 404: /out/404.html
   services:
     - threads: 2
       ip: 127.0.0.1

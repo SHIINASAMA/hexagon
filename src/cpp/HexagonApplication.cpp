@@ -29,24 +29,15 @@ HexagonApplication::HexagonApplication(const std::string &base_path) {
         }
     }
 
-    server.regFilter("/", [](sese::net::http::Request &req, sese::net::http::Response &resp) {
-        if (req.getUri() == "/") {
-            resp.setCode(301);
-            resp.set("location", "/index.html");
-            return false;
-        }
-        return true;
-    });
+    for (auto &&[k, v]: config.mappings) {
+        mapping_component.set(k, v);
+    }
+    server.regFilter("/", mapping_component.getFilter());
 
-    server.regTailFilter([](sese::net::http::Request &req, sese::net::http::Response &resp) {
-        if (resp.getCode() == 404) {
-            auto str = "D:/workspaces/hexagon/out/404.html";
-            auto file = sese::io::File::create(str, "r");
-            sese::streamMove(&resp.getBody(), file.get(), std::filesystem::file_size(str));
-            return true;
-        }
-        return false;
-    });
+    for (auto &&[k, v]: config.friendly_response) {
+        friendly_response_component.set(k, base_path + "/" + v);
+    }
+    server.regTailFilter(friendly_response_component.getFilter());
 }
 
 void HexagonApplication::startup() const {

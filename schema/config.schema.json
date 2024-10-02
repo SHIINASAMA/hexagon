@@ -22,6 +22,24 @@
           "minimum": 30,
           "maximum": 300
         },
+        "mappings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        },
+        "friendly_response": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        },
         "services": {
           "type": "array",
           "items": {

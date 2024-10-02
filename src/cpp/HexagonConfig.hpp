@@ -20,6 +20,8 @@ struct HexagonConfig {
     uint32_t keepalive = 30;
     std::vector<Service> services;
     std::map<std::string, std::string> mounts;
+    std::map<std::string, std::string> mappings;
+    std::map<int, std::string> friendly_response;
 
     /// \brief 读取配置文件
     ///
@@ -29,6 +31,12 @@ struct HexagonConfig {
     explicit HexagonConfig(sese::io::InputStream *input);
 
     void parseServer(sese::Value *value);
+
     void parseService(sese::Value *value);
+
     void parseMount(sese::Value *value);
+
+    void parseFriendlyResponse(sese::Value *value);
+
+    void parseMappings(sese::Value *value);
 };
