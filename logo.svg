@@ -1,0 +1,12 @@
+<svg width="256" height="256" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <linearGradient y2="100%" x2="100%" y1="0%" x1="0%" id="gradient">
+   <stop stop-color="blue" offset="0%"/>
+   <stop stop-color="lightblue" offset="100%"/>
+  </linearGradient>
+ </defs>
+ <g>
+  <title>Layer 1</title>
+  <polygon stroke="null" id="svg_1" fill="url(#gradient)" points="128,40.5 208,79.38888549804688 208,176.611083984375 128,215.5 48,176.611083984375 48,79.38888549804688 "/>
+ </g>
+</svg>

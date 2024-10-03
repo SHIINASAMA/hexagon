@@ -42,4 +42,8 @@ next-env.d.ts
 /build*
 /out
 /vcpkg
+/AppDir
+appimagetool
+CMakeUserPresets.json
 *.tar.gz
+*.AppImage
