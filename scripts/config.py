@@ -44,7 +44,8 @@ generate_preset = {
     "toolchainFile": str(vcpkg_root / "scripts/buildsystems/vcpkg.cmake"),
     "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-    }
+    },
+    "generator": "Ninja"
 }
 
 if os.path.exists(cwd / "CMakeUserPresets.json"):

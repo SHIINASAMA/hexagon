@@ -2,12 +2,14 @@
 
 #include <filesystem>
 
+#include <sese/security/SSLContextBuilder.h>
 #include <sese/io/File.h>
 #include <sese/util/Exception.h>
 #include <sese/Log.h>
 
 HexagonApplication::HexagonApplication(const std::string &base_path) {
-    auto file = sese::io::File::create(base_path + "/config.yml", "r");
+    auto config_path = base_path + "/config.yml";
+    auto file = sese::io::File::create(config_path, "r");
     if (!file) {
         throw sese::Exception("failed to open config.yml");
     }
@@ -24,7 +26,23 @@ HexagonApplication::HexagonApplication(const std::string &base_path) {
 
     for (auto &&[ip, port, cert, pkey]: config.services) {
         auto ipaddr = sese::net::IPAddress::create(ip.c_str(), port);
-        server.regService(ipaddr, nullptr);
+        std::unique_ptr<sese::security::SSLContext> context;
+
+        if (!cert.empty() && !pkey.empty()) {
+            cert = base_path + "/" + cert;
+            pkey = base_path + "/" + pkey;
+            context = sese::security::SSLContextBuilder::UniqueSSL4Server();
+            if (!context->importCertFile(cert.c_str())) {
+                throw sese::Exception("failed to import certificate file");
+            }
+            if (!context->importPrivateKeyFile(pkey.c_str())) {
+                throw sese::Exception("failed to import private key file");
+            }
+            if (!context->authPrivateKey()) {
+                throw sese::Exception("failed to auth private key");
+            }
+        }
+        server.regService(ipaddr, std::move(context));
     }
 
     for (auto &&[k, v]: config.mappings) {

@@ -1,3 +1,4 @@
+import json
 import os
 from pathlib import Path
 import urllib.request
@@ -11,6 +12,9 @@ if 0 != os.system(f"cp -r {cwd}/build/Hexagon {cwd}/AppDir/AppRun"):
 
 if 0 != os.system(f"cp -r {cwd}/logo.svg {cwd}/AppDir/icon.svg"):
     raise Exception("Failed to copy icon.svg")
+
+if 0 != os.system(f"cp {cwd}/tls {cwd}/AppDir/"):
+    raise Exception("Failed to copy tls")
 
 if 0 != os.system(f"cp {cwd}/config.yml {cwd}/AppDir/"):
     raise Exception("Failed to copy config.yml")
@@ -26,7 +30,7 @@ if not os.path.exists(f"{cwd}/appimagetool"):
 
 name = cwd.name
 with os.fdopen(os.open(f"{cwd}/AppDir/.desktop", os.O_WRONLY | os.O_CREAT | os.O_TRUNC), "w") as file:
-    if file is None:    
+    if file is None:
         raise Exception("Failed to open .desktop file")
     file.write("[Desktop Entry]\n")
     file.write(f"Name={name}\n")
