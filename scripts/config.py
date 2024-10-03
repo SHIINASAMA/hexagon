@@ -57,4 +57,4 @@ if os.path.exists(cwd / "CMakeUserPresets.json"):
 else:
     print("Generating CMakeUserPresets.json...")
     with open(cwd / "CMakeUserPresets.json", "w") as file:
-        json.dump({"version":6, "configurePresets": {"python_generate_preset": generate_preset}}, file)
+        json.dump({"version": 6, "configurePresets": [generate_preset]}, file)
