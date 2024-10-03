@@ -45,10 +45,6 @@
           "items": {
             "type": "object",
             "properties": {
-              "threads": {
-                "type": "integer",
-                "minimum": 1
-              },
               "cert-file": {
                 "type": "string"
               },
@@ -66,7 +62,6 @@
               }
             },
             "required": [
-              "threads",
               "ip",
               "port"
             ]

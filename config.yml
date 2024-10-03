@@ -9,6 +9,5 @@ server:
   friendly_responses:
     - 404: /out/404.html
   services:
-    - threads: 2
-      ip: 127.0.0.1
+    - ip: 127.0.0.1
       port: 80

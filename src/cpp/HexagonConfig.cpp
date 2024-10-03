@@ -53,13 +53,6 @@ void HexagonConfig::parseService(sese::Value *value) {
             throw sese::Exception("service's element must be dict type");
         }
         Service service;
-        auto threads = item.getDict().find("threads");
-        if (threads == nullptr ||
-            !threads->isInt()) {
-            service.threads = 2;
-        } else {
-            service.threads = static_cast<uint32_t>(threads->getInt());
-        }
         auto ip = item.getDict().find("ip");
         if (ip == nullptr ||
             !ip->isString()) {

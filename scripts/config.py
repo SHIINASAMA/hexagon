@@ -3,6 +3,7 @@ import subprocess
 import sys
 import tarfile
 import urllib.request
+import json
 from pathlib import Path
 
 vcpkg_root: Path
@@ -37,18 +38,23 @@ else:
     print("Using existing vcpkg...")
     vcpkg_root = Path(os.environ["VCPKG_ROOT"])
 
-subprocess.run(
-    [
-        "cmake",
-        "-S",
-        ".",
-        "-B",
-        "build",
-        "-G",
-        "Ninja",
-        "-DCMAKE_BUILD_TYPE=Release",
-        "-DCMAKE_TOOLCHAIN_FILE={}/scripts/buildsystems/vcpkg.cmake".format(vcpkg_root)
-    ],
-    cwd=cwd,
-    check=True,
-)
+generate_preset = {
+    "name": "python_generate_preset",
+    "binaryDir": "build",
+    "toolchainFile": str(vcpkg_root / "scripts/buildsystems/vcpkg.cmake"),
+    "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+    }
+}
+
+if os.path.exists(cwd / "CMakeUserPresets.json"):
+    print("Using existing CMakeUserPresets.json...")
+    with open(cwd / "CMakeUserPresets.json", "r") as file:
+        preset = json.load(file)
+        preset["configurePresets"].append(generate_preset)
+    with open(cwd / "CMakeUserPresets.json", "w") as file:
+        json.dump(preset, file)
+else:
+    print("Generating CMakeUserPresets.json...")
+    with open(cwd / "CMakeUserPresets.json", "w") as file:
+        json.dump({"version":6, "configurePresets": {"python_generate_preset": generate_preset}}, file)

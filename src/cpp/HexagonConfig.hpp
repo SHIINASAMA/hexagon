@@ -13,7 +13,6 @@ struct HexagonConfig {
         uint32_t port;
         std::string cert;
         std::string pkey;
-        uint32_t threads = 1;
     };
 
     std::string name;

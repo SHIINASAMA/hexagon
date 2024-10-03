@@ -22,11 +22,9 @@ HexagonApplication::HexagonApplication(const std::string &base_path) {
         SESE_INFO("Mounting {} -> {}", uri_prefix, local);
     }
 
-    for (auto &&[ip, port, cert, pkey, threads]: config.services) {
+    for (auto &&[ip, port, cert, pkey]: config.services) {
         auto ipaddr = sese::net::IPAddress::create(ip.c_str(), port);
-        for (uint32_t i = 0; i < threads; ++i) {
-            server.regService(ipaddr, nullptr);
-        }
+        server.regService(ipaddr, nullptr);
     }
 
     for (auto &&[k, v]: config.mappings) {
