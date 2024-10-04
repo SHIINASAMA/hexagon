@@ -50,5 +50,5 @@ package:
     - python3 ./scripts/package_appimage.py
   artifacts:
     paths:
-      - *.AppImage
+      - ./*.AppImage
     expire_in: 30 days
