@@ -13,7 +13,7 @@ if 0 != os.system(f"cp -r {cwd}/build/Hexagon {cwd}/AppDir/AppRun"):
 if 0 != os.system(f"cp -r {cwd}/logo.svg {cwd}/AppDir/icon.svg"):
     raise Exception("Failed to copy icon.svg")
 
-if 0 != os.system(f"cp {cwd}/tls {cwd}/AppDir/"):
+if 0 != os.system(f"cp -r {cwd}/tls {cwd}/AppDir/"):
     raise Exception("Failed to copy tls")
 
 if 0 != os.system(f"cp {cwd}/config.yml {cwd}/AppDir/"):
