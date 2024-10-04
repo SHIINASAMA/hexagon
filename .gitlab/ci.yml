@@ -48,6 +48,7 @@ package:
     - nodejs
     - cmake
   script:
+    - apt update
     - apt install fuse3 -yq
     - python3 ./scripts/package_appimage.py
   artifacts:
