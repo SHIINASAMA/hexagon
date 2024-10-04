@@ -16,7 +16,7 @@ cmake:
   stage: build
   image: kuyoh/vcpkg
   script:
-    - cmake -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake
+    - cmake -Bbuild -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake
     - cmake --build build --target Hexagon
   cache:
     key:
