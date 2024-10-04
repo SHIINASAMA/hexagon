@@ -18,6 +18,13 @@ cmake:
   script:
     - cmake -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake
     - cmake --build build --target Hexagon
+  cache:
+    key:
+      files:
+        - vcpkg.json
+        - vcpkg-ports/**
+    paths:
+      - $HOME/.cache/vcpkg/archives
   artifacts:
     paths:
       - build/Hexagon
