@@ -1,19 +1,5 @@
 stages:
-  - build-docker
   - build
-
-docker:
-  stage: build-docker
-  image: reg.mikumikumi.xyz/base/kaniko-builder
-  variables:
-    BUILD_CONTEXT: .
-    BUILD_DOCKERFILE: docker/appimage.dockerfile
-  script:
-    - build
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      changes:
-        - 'docker/appimage.dockerfile'
 
 nodejs:
   stage: build
@@ -28,10 +14,9 @@ nodejs:
 
 cmake:
   stage: build
-  image: reg.mikumikumi.xyz/kaoru/hexagon
+  image: kuyoh/vcpkg
   script:
-    - python3 ./scripts/config.py
-    - cmake --preset python_generate_preset
+    - cmake -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake
     - cmake --build build --target Hexagon
   artifacts:
     paths:
@@ -43,6 +28,9 @@ package:
   when: always
   image: python:3.11
   dependencies:
+    - nodejs
+    - cmake
+  needs:
     - nodejs
     - cmake
   script:
