@@ -40,6 +40,7 @@ cmake:
 
 package:
   stage: build
+  when: always
   image: python:3.11
   dependencies:
     - nodejs
