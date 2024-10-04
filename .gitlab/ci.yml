@@ -4,6 +4,13 @@ stages:
 nodejs:
   stage: build
   image: node:20
+  cache:
+    key:
+      files:
+        - package.json
+        - package-lock.json
+    paths:
+      - node_modules
   script:
     - npm install
     - npm run build
