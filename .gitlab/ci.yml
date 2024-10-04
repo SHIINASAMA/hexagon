@@ -1,0 +1,53 @@
+stages:
+  - build-docker
+  - build
+
+docker:
+  stage: build-docker
+  image: reg.mikumikumi.xyz/base/kaniko-builder
+  variables:
+    BUILD_CONTEXT: .
+    BUILD_DOCKERFILE: docker/appimage.dockerfile
+  script:
+    - build
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - 'docker/appimage.dockerfile'
+
+nodejs:
+  stage: build
+  image: node:20
+  script:
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      - out
+    expire_in: 1 hour
+
+cmake:
+  stage: build
+  image: reg.mikumikumi.xyz/kaoru/hexagon
+  script:
+    - python3 ./scripts/config.py
+    - cmake --preset python_generate_preset
+    - cmake --build build --target Hexagon
+  artifacts:
+    paths:
+      - build/Hexagon
+    expire_in: 1 hour
+
+package:
+  stage: build
+  image: python:3.11
+  dependencies:
+    - nodejs
+    - cmake
+  script:
+    - apt install file
+    - python3 ./scripts/package_appimage.py
+  artifacts:
+    paths:
+      - *.AppImage
+    expire_in: 30 days
