@@ -4,13 +4,6 @@ stages:
 nodejs:
   stage: build
   image: node:20
-  cache:
-    key:
-      files:
-        - package.json
-        - package-lock.json
-    paths:
-      - node_modules
   script:
     - npm install
     - npm run build
@@ -28,7 +21,7 @@ cmake:
         - vcpkg.json
         - vcpkg-ports/**
     paths:
-      - $HOME/.cache/vcpkg/archives
+      - /root/.cache/vcpkg/archives
   script:
     - cmake -Bbuild -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake
     - cmake --build build --target Hexagon
@@ -40,7 +33,6 @@ cmake:
 package:
   stage: build
   when: always
-  image: python:3.11
   dependencies:
     - nodejs
     - cmake
@@ -48,10 +40,12 @@ package:
     - nodejs
     - cmake
   script:
-    - apt update
-    - apt install fuse3 -yq
-    - python3 ./scripts/package_appimage.py
+    - mkdir -r App
+    - cp build/Hexagon App/Hexagon
+    - cp -r tls App/tls
+    - cp -r config.yml App/config.yml
+    - cp -r out /App/out
   artifacts:
     paths:
-      - ./*.AppImage
+      - App
     expire_in: 30 days
