@@ -15,13 +15,15 @@ nodejs:
 cmake:
   stage: build
   image: kuyoh/vcpkg
+  variables:
+    VCPKG_DEFAULT_BINARY_CACHE: $CI_PROJECT_DIR/vcpkg-archives
   cache:
     key:
       files:
         - vcpkg.json
         - vcpkg-ports/**
     paths:
-      - /root/.cache/vcpkg/archives
+      - vcpkg-archives
   script:
     - cmake -Bbuild -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake
     - cmake --build build --target Hexagon
@@ -40,7 +42,7 @@ package:
     - nodejs
     - cmake
   script:
-    - mkdir -r App
+    - mkdir -p App
     - cp build/Hexagon App/Hexagon
     - cp -r tls App/tls
     - cp -r config.yml App/config.yml
