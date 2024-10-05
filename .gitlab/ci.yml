@@ -11,6 +11,7 @@ nodejs:
     paths:
       - out
     expire_in: 1 hour
+  timeout: 30m
 
 cmake:
   stage: build
@@ -25,12 +26,14 @@ cmake:
     paths:
       - vcpkg-archives
   script:
+    - mkdir vcpkg-archives
     - cmake -Bbuild -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake
     - cmake --build build --target Hexagon
   artifacts:
     paths:
       - build/Hexagon
     expire_in: 1 hour
+  timeout: 30m
 
 package:
   stage: build
@@ -51,3 +54,4 @@ package:
     paths:
       - App
     expire_in: 30 days
+  timeout: 30m
