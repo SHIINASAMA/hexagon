@@ -49,7 +49,7 @@ package:
     - cp build/Hexagon App/Hexagon
     - cp -r tls App/tls
     - cp -r config.yml App/config.yml
-    - cp -r out /App/out
+    - cp -r out App/out
   artifacts:
     paths:
       - App
