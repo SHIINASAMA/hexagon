@@ -7,6 +7,7 @@
 #include "HexagonConfig.hpp"
 #include "component/MappingComponent.hpp"
 #include "component/FriendlyResponseComponent.hpp"
+#include "component/MaxBodyComponent.hpp"
 
 class HexagonApplication {
 public:
@@ -22,4 +23,5 @@ private:
 
     MappingComponent mapping_component;
     FriendlyResponseComponent friendly_response_component;
+    MaxBodyComponent max_body_component;
 };

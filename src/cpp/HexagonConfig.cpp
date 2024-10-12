@@ -36,6 +36,14 @@ void HexagonConfig::parseServer(sese::Value *value) {
         this->keepalive = static_cast<uint32_t>(keepalive->getInt());
     }
 
+    auto max_body_size = server->getDict().find("max_body_size");
+    if (max_body_size == nullptr ||
+        !max_body_size->isInt()) {
+        this->max_body_size = 4096;
+    } else {
+        this->max_body_size = static_cast<uint32_t>(max_body_size->getInt());
+    }
+
     parseService(server->getDict().find("services"));
     parseMount(server->getDict().find("mounts"));
     parseMappings(server->getDict().find("mappings"));

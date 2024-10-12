@@ -17,6 +17,7 @@ struct HexagonConfig {
 
     std::string name;
     uint32_t keepalive = 30;
+    uint32_t max_body_size = 4096;
     std::vector<Service> services;
     std::map<std::string, std::string> mounts;
     std::map<std::string, std::string> mappings;

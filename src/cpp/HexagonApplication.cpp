@@ -45,6 +45,9 @@ HexagonApplication::HexagonApplication(const std::string &base_path) {
         server.regService(ipaddr, std::move(context));
     }
 
+    max_body_component.setSize(config.max_body_size);
+    server.regFilter("/", max_body_component.getFilter());
+
     for (auto &&[k, v]: config.mappings) {
         SESE_INFO("Mapping {} -> {}", k, v);
         mapping_component.set(k, v);
