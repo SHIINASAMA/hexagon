@@ -33,7 +33,7 @@ cmake:
     paths:
       - build/Hexagon
     expire_in: 1 hour
-  timeout: 30m
+  timeout: 90m
 
 package:
   stage: build
